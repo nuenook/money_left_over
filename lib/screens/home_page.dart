@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_left_over/widgets/add_list_form.dart';
+import 'package:money_left_over/widgets/list_expenditure.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -19,20 +20,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("My Expenditure"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.display1,
-            // ),
-          ],
-        ),
-      ),
+      body: ListExpenditure(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showSettingPanel();

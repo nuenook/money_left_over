@@ -2,6 +2,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:money_left_over/models/expenditure.dart';
+import 'package:money_left_over/models/expenditure_model.dart';
+import 'package:provider/provider.dart';
 
 class AddListForm extends StatefulWidget {
   @override
@@ -11,6 +14,9 @@ class AddListForm extends StatefulWidget {
 class _AddListFormState extends State<AddListForm> {
   final _formKey = GlobalKey<FormState>();
   final format = DateFormat("yyyy-MM-dd");
+
+  final amountController = TextEditingController();
+  final noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,9 @@ class _AddListFormState extends State<AddListForm> {
               height: 20.0,
             ),
             TextFormField(
+              controller: amountController,
               keyboardType: TextInputType.number,
+              validator: (val) => val.isEmpty ? 'Please enter a amount' : null,
               inputFormatters: <TextInputFormatter>[
                 WhitelistingTextInputFormatter.digitsOnly
               ],
@@ -60,12 +68,22 @@ class _AddListFormState extends State<AddListForm> {
               'Note',
               style: TextStyle(fontSize: 18.0),
             ),
-            TextFormField(),
+            TextFormField(
+              controller: noteController,
+            ),
             RaisedButton(
               color: Colors.pink[400],
               child: Text('Add', style: TextStyle(color: Colors.white)),
               onPressed: () {
-                Navigator.of(context).pop();
+                if (_formKey.currentState.validate()) {
+                  var newExpenditure = Expenditure(
+                      amount: double.parse(amountController.text),
+                      onDate: new DateTime.now(),
+                      note: noteController.text);
+                  Provider.of<ExpenditureModel>(context, listen: false)
+                      .addExpenditure(newExpenditure);
+                  Navigator.of(context).pop();
+                }
               },
             )
           ],

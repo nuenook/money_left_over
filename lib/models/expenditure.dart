@@ -9,7 +9,4 @@ class Expenditure {
     this.note,
     this.onDate
   });
-
-  
-
 }

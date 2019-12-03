@@ -23,9 +23,26 @@ class HomePage extends StatelessWidget {
         title: Text("My Expenditure"),
       ),
       body: Consumer<ExpenditureModel>(
-        builder: (context, expenditure, child) => ListExpenditure(
-          myList: expenditure.allExpenditure,
-        ),
+        builder: (context, expenditure, child) {
+
+          var theseList = expenditure.allExpenditure;
+          var sum = 0.0;
+          
+          if (theseList.length > 0) {
+            sum = theseList.map((ea) => ea.amount).reduce((curr, next) => curr + next);
+          }
+          return Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text('\$ $sum \$'),
+            ),
+            ListExpenditure(
+              myList: expenditure.allExpenditure,
+            ),
+          ],
+        );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

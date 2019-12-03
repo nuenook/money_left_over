@@ -20,7 +20,7 @@ class ListExpenditure extends StatelessWidget {
             myList: myList[index],
           ),
           confirmDismiss: (DismissDirection direction) async {
-            final bool res = await showDialog(
+            await showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(

@@ -31,10 +31,10 @@ class _AddListFormState extends State<AddListForm> {
             ),
             TextFormField(
               controller: amountController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
               validator: (val) => val.isEmpty ? 'Please enter a amount' : null,
               inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter.digitsOnly
+                WhitelistingTextInputFormatter(new RegExp('^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)\$'))
               ],
             ),
             SizedBox(

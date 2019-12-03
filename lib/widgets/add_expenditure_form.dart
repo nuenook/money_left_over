@@ -29,9 +29,6 @@ class _AddListFormState extends State<AddListForm> {
               'Amount',
               style: TextStyle(fontSize: 18.0),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
             TextFormField(
               controller: amountController,
               keyboardType: TextInputType.number,
@@ -46,9 +43,6 @@ class _AddListFormState extends State<AddListForm> {
             Text(
               'Date',
               style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(
-              height: 20.0,
             ),
             DateTimeField(
               initialValue: DateTime.now(),
@@ -80,6 +74,8 @@ class _AddListFormState extends State<AddListForm> {
                       amount: double.parse(amountController.text),
                       onDate: new DateTime.now(),
                       note: noteController.text);
+
+                  /// This is how Provider get addExpenditure from ExpenditureModel (basically, look it from context from parent widget)
                   Provider.of<ExpenditureModel>(context, listen: false)
                       .addExpenditure(newExpenditure);
                   Navigator.of(context).pop();

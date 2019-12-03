@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_left_over/models/expenditure_model.dart';
-import 'package:money_left_over/widgets/add_list_form.dart';
+import 'package:money_left_over/widgets/add_expenditure_form.dart';
 import 'package:money_left_over/widgets/list_expenditure.dart';
 import 'package:provider/provider.dart';
 

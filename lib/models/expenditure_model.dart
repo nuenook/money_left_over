@@ -1,17 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:money_left_over/models/expenditure.dart';
+import 'package:money_left_over/services/db_provider.dart';
 
 class ExpenditureModel with ChangeNotifier {
-  final List<Expenditure> _expenditures = [
-    new Expenditure(amount: 55, note: "test 1", onDate: DateTime.now()),
-    new Expenditure(amount: 55, note: "test 2", onDate: DateTime.now()),
-    new Expenditure(amount: 55, note: "test 3", onDate: DateTime.now())
-  ];
+  final List<Expenditure> _expenditures = [];
 
   List<Expenditure> get allExpenditure => _expenditures;
 
-  void addExpenditure(Expenditure newExpenditure) {
+  StreamController<List<Expenditure>> controller = StreamController<List<Expenditure>>();
+
+  Stream get Expenditures => controller.stream;
+
+  getExpenditures() async {
+    var result = await DBProvider.db.getAllExpenditure();
+
+    _expenditures.addAll(result);
+    controller.add(_expenditures);
+  }
+
+  void addExpenditure(Expenditure newExpenditure) async {
+    var result = await DBProvider.db.newClient(newExpenditure);
     _expenditures.insert(0, newExpenditure);
+    controller.add(_expenditures);
     notifyListeners();
   }
 

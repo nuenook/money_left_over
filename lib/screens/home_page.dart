@@ -25,6 +25,8 @@ class HomePage extends StatelessWidget {
         title: Text("My Expenditure"),
       ),
       body: Consumer<ExpenditureModel>(builder: (context, expenditure, child) {
+
+        // expenditure.getExpenditures();
         var theseList = expenditure.allExpenditure;
         var sum = 0.0;
         final formatter = new NumberFormat("#,###.##");

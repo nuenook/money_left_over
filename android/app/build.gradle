@@ -44,6 +44,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -53,6 +54,8 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    
+    packagingOptions { exclude 'META-INF/proguard/androidx-annotations.pro' }
 }
 
 flutter {

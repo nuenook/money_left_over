@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:money_left_over/models/expenditure_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_left_over/bloc/expenditure_bloc.dart';
+import 'package:money_left_over/bloc/expenditure_event.dart';
+import 'package:money_left_over/models/expenditure.dart';
 import 'package:money_left_over/widgets/add_expenditure_form.dart';
-import 'package:money_left_over/widgets/list_expenditure.dart';
-import 'package:provider/provider.dart';
+import 'package:money_left_over/widgets/group_expenditures.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    void _showSettingPanel() {
+    void _showSettingPanel(Function onSubmit) {
       showModalBottomSheet(
           context: context,
           builder: (context) {
             return Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-              child: AddListForm(),
+              child: AddListForm(onSubmit: onSubmit),
             );
           });
     }
@@ -24,35 +25,15 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("My Expenditure"),
       ),
-      body: Consumer<ExpenditureModel>(builder: (context, expenditure, child) {
-
-        // expenditure.getExpenditures();
-        var theseList = expenditure.allExpenditure;
-        var sum = 0.0;
-        final formatter = new NumberFormat("#,###.##");
-        if (theseList.length > 0) {
-          sum = theseList
-              .map((ea) => ea.amount)
-              .reduce((curr, next) => curr + next);
-        }
-        return Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text('\$ ${formatter.format(sum)} \$'),
-            ),
-            Expanded(
-              child: ListExpenditure(
-                myList: expenditure.allExpenditure,
-              ),
-            ),
-            SizedBox(height: 20,)
-          ],
-        );
-      }),
+      body: GroupExpenditures(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showSettingPanel();
+          var onSubmit = (Expenditure newExpenditure) {
+            BlocProvider.of<ExpenditureBloc>(context)
+                .add(AddExpenditure(newExpenditure: newExpenditure));
+          };
+
+          _showSettingPanel(onSubmit);
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

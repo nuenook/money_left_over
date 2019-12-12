@@ -2,7 +2,7 @@ class Expenditure {
   int id;
   String note;
   double amount;
-  DateTime onDate;
+  String onDate;
 
   Expenditure({this.amount, this.note, this.onDate, this.id});
 

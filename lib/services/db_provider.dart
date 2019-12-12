@@ -23,6 +23,7 @@ class DBProvider {
     String path = join(documentsDirectory.path, "TestDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
+      /// TODO: will make onDate compatible to Datetime of SqlLite
       await db.execute("CREATE TABLE Expenditure ("
           "id INTEGER PRIMARY KEY,"
           "note TEXT,"
@@ -32,7 +33,7 @@ class DBProvider {
     });
   }
 
-  newClient(Expenditure newExpenditure) async {
+  newExpenditure(Expenditure newExpenditure) async {
     final db = await database;
     var res = await db.insert("Expenditure", newExpenditure.toMap());
     return res;
@@ -46,7 +47,7 @@ class DBProvider {
     return list;
   }
 
-  deleteClient(int id) async {
+  deleteExpenditure(int id) async {
     final db = await database;
     db.delete("Expenditure", where: "id = ?", whereArgs: [id]);
   }

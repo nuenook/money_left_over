@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:money_left_over/models/expenditure.dart';
-import 'package:money_left_over/models/expenditure_model.dart';
-import 'package:provider/provider.dart';
 
 class AddListForm extends StatefulWidget {
+  final Function onSubmit;
+  AddListForm({this.onSubmit});
+
   @override
   _AddListFormState createState() => _AddListFormState();
 }
@@ -34,7 +35,8 @@ class _AddListFormState extends State<AddListForm> {
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               validator: (val) => val.isEmpty ? 'Please enter a amount' : null,
               inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter(new RegExp('^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)\$'))
+                WhitelistingTextInputFormatter(new RegExp(
+                    '^[+-]?(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)\$'))
               ],
             ),
             SizedBox(
@@ -69,15 +71,15 @@ class _AddListFormState extends State<AddListForm> {
               color: Colors.pink[400],
               child: Text('Add', style: TextStyle(color: Colors.white)),
               onPressed: () {
+                ///TODO: Use real timestamp from select date and make compatible to datetime of SqlLite
+                ///, currently hard code timestamp to string
                 if (_formKey.currentState.validate()) {
                   var newExpenditure = Expenditure(
                       amount: double.parse(amountController.text),
-                      onDate: new DateTime.now(),
+                      onDate:
+                          new DateTime.now().millisecondsSinceEpoch.toString(),
                       note: noteController.text);
-
-                  /// This is how Provider get addExpenditure from ExpenditureModel (basically, look it from context from parent widget)
-                  Provider.of<ExpenditureModel>(context, listen: false)
-                      .addExpenditure(newExpenditure);
+                  widget.onSubmit(newExpenditure);
                   Navigator.of(context).pop();
                 }
               },

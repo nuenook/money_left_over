@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:money_left_over/models/expenditure_model.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_left_over/screens/home_page.dart';
-import 'package:provider/provider.dart';
 
+import 'bloc/expenditure_bloc.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ExpenditureModel(),
-      child: MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    )
-    );
+    return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: BlocProvider<ExpenditureBloc>(
+          create: (context) => ExpenditureBloc(),
+          child: HomePage(),
+        ));
   }
 }
